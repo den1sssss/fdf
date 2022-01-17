@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+/*
 int getheight(char *file)
 {
 	int height;
@@ -22,6 +23,11 @@ int getheight(char *file)
 int getwidth(char *file)
 {
 
+}
+*/
+int **getmap(char **line)
+{
+	
 }
 int main(int argc, char **argv)
 {
