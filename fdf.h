@@ -8,8 +8,8 @@ typedef struct
 	int **matrix;	
 }   Map;
 
-# include "../libft/libft.h"
+# include "libft/libft.h"
 # include <math.h>
-# include "../minilibx_macos/mlx.h"
+# include "minilibx_macos/mlx.h"
 
 #endif 
