@@ -4,6 +4,7 @@
 #include <stdio.h>
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
+# include "MLX/mlx.h"
 
 int getheight(char *file)
 {
@@ -25,32 +26,48 @@ int getheight(char *file)
 int getwidth(char *file)
 {
 	int		len;
-	char	**arr;
+	char	*arr;
+	int fd;
 
 	len = 0;
-	arr = ft_split(file, ' ');
-	while (arr[len])
-		len++;
-	return (len);
-}
-int		width(char const *str, char c)
-{
+	fd=open(file,O_RDONLY);
+	arr = get_next_line(fd);
 	int i;
 	int words;
 
 	words = 0;
 	i = 0;
-	while (str[i])
+	while (arr[i])
 	{
-		while (str[i] == c && str[i] != '\0')
+		while (arr[i] == ' ' && arr[i])
 			i++;
-		if (str[i])
+		if (arr[i])
 			words++;
-		while (str[i] != c && str[i] != '\0')
+		while (arr[i] != ' ' && arr[i])
 			i++;
 	}
+	close(fd);
 	return (words);
+	
 }
+// int		width(char const *str, char c)
+// {
+// 	int i;
+// 	int words;
+
+// 	words = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		while (str[i] == c && str[i])
+// 			i++;
+// 		if (str[i])
+// 			words++;
+// 		while (str[i] != c && str[i])
+// 			i++;
+// 	}
+// 	return (words);
+// }
 // int *mallocinie(int **m, int i,)
 // {
 
@@ -61,31 +78,82 @@ int **getmap(char *file)
 	int	h;
 	int	i;
 	int j;
+	int fd;
 	int	**map;
 	char **str;
 	int *massiv;
 
-	printf("kej");
+	fd = open(file, O_RDONLY);
 	i = 0;
 	h = getheight(file);
-	w = h;
+	w = getwidth(file);
 	map = (int **)malloc(sizeof(int*) * h);
 	while (i < h)
 	{
-		printf("[%c]",file[i]);
 		map[i] = (int *)malloc(sizeof(int) * w);
-		str = ft_split((get_next_line(file[i])), ' ');
+		str = ft_split(get_next_line(fd), ' ');//файл итый не катит=(((////////////////
 		j = 0;
 		
-		// massiv = map[i];
-		// while (str[j])
-		// {
-		// 	massiv[j] = ft_atoi(str[j]);
-		// 	j++;
-		// }
+		massiv = map[i];
+		while (str[j])
+		{
+			massiv[j] = ft_atoi(str[j]);
+			j++;
+		}
 		i++;
 	}
 	return (map);
+}
+float min(float a, float b)
+{
+	if (a<b)
+		return a;
+	else 
+		return b;
+}
+float max(float a, float b)
+{
+	if (a<b)
+		return b;
+	else 
+		return a;
+}
+
+float mod(float a)
+{
+	if(a<0)
+		return(-a);
+	else
+		return (a);
+}
+void draw(float x, float y, float x1, float y1, Map *data)
+{
+	float xx;
+	float yy;
+	int maximum;
+
+	xx=x1 -x;
+	yy=y1-y;
+
+	maximum=max(mod(xx),mod(yy));
+	xx /= max(xx,yy);
+	yy /= max(xx,yy);
+	while(x-x1 < 0 || y-y1 < 0)
+	{
+		mlx_pixel_put(data->mlx_ptr,data->win_ptr,x,y,0xffffff);
+		x+=xx;
+		y+=yy;
+	}
+}
+
+void Picture (Map *data)
+{
+	
+}
+int key(int a,void *data)
+{
+	printf("%d",a);
+	return (0);
 }
 int main(int argc, char **argv)
 {
@@ -109,9 +177,39 @@ int main(int argc, char **argv)
 	// 	printf(" ");
 	// 	a++;
 	//
-	printf("hello"); 
 	int **kek;
+	int	i;
+	int	j;
+	int w;
+	int h;
 
-	kek=getmap("1.txt");
-	return(0);
+	kek=getmap("42.fdf");
+	i = 0;
+	h = getheight("42.fdf");
+	w = getwidth("42.fdf");
+	printf("%d\n",h);
+	printf("%d\n",w);
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++)
+			printf("%2d ", kek[i][j]);
+		printf("\n");
+	}
+
+	Map data;
+	data=*(Map *)malloc(sizeof(Map));
+	data.matrix=kek;
+
+	data.mlx_ptr = mlx_init();
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "FDF");
+
+
+
+	draw(10,10,600,300,&data);
+
+	mlx_key_hook(data.win_ptr, key, NULL);
+	mlx_loop(data.mlx_ptr);
+
+
+
 }
