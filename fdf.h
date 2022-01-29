@@ -6,6 +6,9 @@ typedef struct
 	int height;
 	int width;
 	int **matrix;	
+	int scale;
+
+	int color;
 	void	*mlx_ptr;
 	void	*win_ptr;
 }   Map;
