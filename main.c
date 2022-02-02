@@ -127,17 +127,27 @@ float mod(float a)
 		return (a);
 }
 
-void angle(float *x,float *y, int z)
+ void angle(float *x,float *y, int z)
 {
 	float temp_x;
 	float temp_y;
-		printf("%f [ANGLE] %f\n",*x,*y);
-		printf("\n");
+		// printf("%f [before] %f\n",*x,*y);
+		// printf("\n");
 	temp_x = *x;
 	temp_y = *y;
-	*x = (temp_x - temp_y) * cos(0.8) ;
-	*y = (temp_x + temp_y) * sin(0.8) - z;
-	// printf("%d\n%d\n",*x,*y);
+	*x = (temp_x - temp_y) * cos(0.523599) ;
+	*y = (temp_x + temp_y) * sin(0.523599) - z;
+
+	// printf("%f [after] %f\n",*x,*y);
+
+	// 	*x = (temp_x - temp_y) * cos(0.8) ;
+	// *y = (temp_x + temp_y) * sin(0.8) - z;
+
+	// 	printf("%f [ANGLE] %f\n",*x,*y);
+	// 	printf("\n");
+
+	// *x = (*x - *y) * cos(0.523599) ;
+	// *y = (*x + *y) * sin(0.523599) - z;
 }
 
 
@@ -145,61 +155,97 @@ void Draw(float x, float y, float x1, float y1, Map *data)
 {
 	float xx;
 	float yy;
-	int maximum;
+	float maximum;
 	int z;
 	int z1;
 
 
 	// xx=x1 -x;
 	// yy=y1-y;
+	// printf("xx= %f  [draw] yy = %f\n",xx,yy);
 
 
 	z=data->matrix[(int)y][(int)x];
 	z1=data->matrix[(int)y1][(int)x1];
 
-	// x*=700/max(data->height,data->width);
-	// x1*=700/max(data->height,data->width);
-	// y*=700/max(data->height,data->width);
-	// y1*=700/max(data->height,data->width);
+	x*=700/max(data->height,data->width);
+	x1*=700/max(data->height,data->width);
+	y*=700/max(data->height,data->width);
+	y1*=700/max(data->height,data->width);
 
-		printf("%f [draw] %f\n",x,y);
-	 x*=30;
-	 x1*=30;
-	 y*=30;
-	 y1*=30;
+	// printf("%f [draw] %f\n",x,y);
+	//  x*=30;
+	//  x1*=30;
+	//  y*=30;
+	//  y1*=30;
 	
 	//data->color =(z)? 0x89fe05 : 0xd51ffb;
 
-	if(z>0 || z1 > 0)
-		data->color= 0x89fe05;
-	else	
-		data->color=0xd51ffb;
+	// if(z>0 || z1 > 0)
+	// 	data->color= 0xff0000;
+	// else	
+	// 	data->color=0xffffff;
 
-	printf("%f [draw] %f\n",x,y);
+
+	// xx=x1 -x;
+	// yy=y1-y;
+	// printf("%f=xx\n",xx);
+	// printf("%f=yy\n",yy);
+
+
+	x+=500;
+	y+=100;
+	x1+=500;
+	y1+=100;
+
+
+
+	// x+=350;
+	// y+=350;
+	// x1+=350;
+	// y1+=350;
+
+	// printf("%f [before] %f\n",x,y);
+	angle(&x,&y,z); //suka
+	// printf("%f [after] %f\n",x,y);
+
+	// printf("%f [1before] %f\n",x1,y1);
+	angle(&x1,&y1,z1);
+	// printf("%f [1after] %f\n",x1,y1);
 
 	xx=x1 -x;
 	yy=y1-y;
-
-
-
-	x+=350;
-	y+=350;
-	x1+=350;
-	y1+=350;
-
-	// angle(&x,&y,z); //suka
-	// angle(&x1,&y1,z1);
-
 	maximum=max(mod(xx),mod(yy));
 	xx /= maximum;
+
+	// printf("%f=xx1\n",xx);
+
 	yy /= maximum;
-	while((int)(x-x1) || (int)(y-y1) )
+	
+	// x+=data->leftright;
+	// y+=data->updown;
+	// x1+=data->leftright;
+	// y1+=data->updown;
+
+	// printf("%f=yy1\n",yy);
+	// printf("%f [xx][yy] %f\n",xx,yy);
+
+	if(z>0 || z1 > 0)
+		data->color= 0xFF0000;
+	else	
+		data->color=0xFFFFFF;//A020F0;
+	while((int)(x-x1) && (int)(y-y1) )
 	{
 		// angle(&x,&y,z);
 		// angle(&x1,&y1,z1);
 		mlx_pixel_put(data->mlx_ptr,data->win_ptr,x,y,data->color);
 		x+=xx;
+		// printf("%f = x\n",x);
+		// 	printf("%f=y\n",y);
 		y+=yy;
+		// printf("kek\n");
+		if( x<0 || y<0)
+			break;
 	}
 }
 
@@ -233,20 +279,39 @@ void Picture (Map *data)
 		while(x<data->width)
 		{
 			if(x<data->width-1)
+			{
+				// printf("draw x\n\n");
 				Draw(x,y,x+1,y,data);
+				// printf("\n\n");
+			}
 			if(y<data->height-1)
+			{
+				// printf("draw y\n\n");
 				Draw(x,y,x,y+1,data);
+				// printf("\n\n");
+			}
 			x++;
 		}
 		y++;
 	}
 }
-int key(int a,void *data)
+int which_key(int key,Map *data)
 {
-	printf("%d",a);
+	printf("%d",key);
+	if(key ==123)
+		data->leftright-=10;
+	if(key ==124)
+		data->leftright+=10;
+	if(key ==125)
+		data->updown-=10;
+	if(key ==126)
+		data->updown+=10;
+	mlx_clear_window(data->mlx_ptr,data->win_ptr);
+	Picture(data);
+	printf("yessir\n");
 	return (0);
 }
-int main(int argc, char **argv)
+int main(void)
 {
 	
 	// int **matrix;
@@ -271,7 +336,6 @@ int main(int argc, char **argv)
 	//
 	int **kek;
 	int	i;
-	int	j;
 	int w;
 	int h;
 
@@ -294,14 +358,14 @@ int main(int argc, char **argv)
 	data.height=h;
 	data.width=w;
 	data.mlx_ptr = mlx_init();
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 1920, 1080, "FDF");
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "FDF");
 
 
 
 	// Draw(10,10,600,300,&data);
 	Picture(&data);
 
-	mlx_key_hook(data.win_ptr, key, NULL);
+	mlx_key_hook(data.win_ptr, which_key, &data);
 	mlx_loop(data.mlx_ptr);
 
 

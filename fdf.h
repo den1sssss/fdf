@@ -8,6 +8,9 @@ typedef struct
 	int **matrix;	
 	int scale;
 
+	int updown;
+	int leftright;
+
 	int color;
 	void	*mlx_ptr;
 	void	*win_ptr;
