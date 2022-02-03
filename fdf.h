@@ -11,6 +11,8 @@ typedef struct
 	int updown;
 	int leftright;
 
+	float angle;
+
 	int color;
 	void	*mlx_ptr;
 	void	*win_ptr;

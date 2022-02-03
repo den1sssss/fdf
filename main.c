@@ -127,17 +127,26 @@ float mod(float a)
 		return (a);
 }
 
- void angle(float *x,float *y, int z)
+void default_settings(Map *data)
+{
+	data->updown=100;
+	data->leftright=-100;
+	data->scale=700/max(data->height,data->width);
+	data->angle=0.523599;
+}
+ void Angle(float *x,float *y, int z,Map *data)
 {
 	float temp_x;
-	float temp_y;
+	float temp_y; 
 		// printf("%f [before] %f\n",*x,*y);
 		// printf("\n");
 	temp_x = *x;
 	temp_y = *y;
-	*x = (temp_x - temp_y) * cos(0.523599) ;
-	*y = (temp_x + temp_y) * sin(0.523599) - z;
+	*x = (temp_x - temp_y) * cos(data->angle) ;
+	*y = (temp_x + temp_y) * sin(data->angle) - z;
 
+	// 	*x = (temp_x - temp_y) * cos(0) ;
+	// *y = (temp_x + temp_y) * sin(0) - z;
 	// printf("%f [after] %f\n",*x,*y);
 
 	// 	*x = (temp_x - temp_y) * cos(0.8) ;
@@ -168,10 +177,15 @@ void Draw(float x, float y, float x1, float y1, Map *data)
 	z=data->matrix[(int)y][(int)x];
 	z1=data->matrix[(int)y1][(int)x1];
 
-	x*=700/max(data->height,data->width);
-	x1*=700/max(data->height,data->width);
-	y*=700/max(data->height,data->width);
-	y1*=700/max(data->height,data->width);
+	// x*=700/max(data->height,data->width);
+	// x1*=700/max(data->height,data->width);
+	// y*=700/max(data->height,data->width);
+	// y1*=700/max(data->height,data->width);
+
+	x*=data->scale;
+	x1*=data->scale;
+	y*=data->scale;
+	y1*=data->scale;
 
 	// printf("%f [draw] %f\n",x,y);
 	//  x*=30;
@@ -193,10 +207,10 @@ void Draw(float x, float y, float x1, float y1, Map *data)
 	// printf("%f=yy\n",yy);
 
 
-	x+=500;
-	y+=100;
-	x1+=500;
-	y1+=100;
+	// x+=500;
+	// y+=100;
+	// x1+=500;
+	// y1+=100;
 
 
 
@@ -206,11 +220,11 @@ void Draw(float x, float y, float x1, float y1, Map *data)
 	// y1+=350;
 
 	// printf("%f [before] %f\n",x,y);
-	angle(&x,&y,z); //suka
+	Angle(&x,&y,z, data); //suka
 	// printf("%f [after] %f\n",x,y);
 
 	// printf("%f [1before] %f\n",x1,y1);
-	angle(&x1,&y1,z1);
+	Angle(&x1,&y1,z1 , data);
 	// printf("%f [1after] %f\n",x1,y1);
 
 	xx=x1 -x;
@@ -221,14 +235,35 @@ void Draw(float x, float y, float x1, float y1, Map *data)
 	// printf("%f=xx1\n",xx);
 
 	yy /= maximum;
-	
-	// x+=data->leftright;
-	// y+=data->updown;
-	// x1+=data->leftright;
-	// y1+=data->updown;
 
+	// default_settings(data);
+
+	x+=data->leftright;
+	y+=data->updown;
+	x1+=data->leftright;
+	y+=data->updown;
+
+	// 	x=data->updown;
+	// y=data->leftright;
+	// x1=data->updown;
+	// y=data->leftright;
+
+
+	// x+=500;
+	// y+=100;
+	// x1+=500;
+	// y1+=100;
+	// printf("%f %f\n",x,y);
 	// printf("%f=yy1\n",yy);
 	// printf("%f [xx][yy] %f\n",xx,yy);
+
+	// if(z<0 && z1<0)	
+	// 	data->color=0x0000FF;// blue water
+	// else if(z >0 && z1<10)
+	// 	data->color = 0x00FF00; //green gras
+	// else if(z>=10 && z1 >= 10)
+	// 	data->color= 0xFFFFFF;
+
 
 	if(z>0 || z1 > 0)
 		data->color= 0xFF0000;
@@ -294,21 +329,48 @@ void Picture (Map *data)
 		}
 		y++;
 	}
+	printf("\nleftright %d\n",data->leftright);
+	printf("updown %d\n\n",data->updown);
+}
+void hehehe(Map *data)
+{
+	int i;
+
+	i=0;
+
+	while(i<100)
+	{
+		mlx_clear_window(data->mlx_ptr,data->win_ptr);
+		data->angle+=0.2;
+		Picture(data);
+		mlx_clear_window(data->mlx_ptr,data->win_ptr);
+		i++;
+	}
 }
 int which_key(int key,Map *data)
 {
-	printf("%d",key);
+	// data->leftright=500;
+	// data->updown=500;
+	printf("button %d",key);
 	if(key ==123)
-		data->leftright-=10;
-	if(key ==124)
-		data->leftright+=10;
+		data->leftright-=100;
+	if(key==124)
+		data->leftright+=100;
 	if(key ==125)
-		data->updown-=10;
+		data->updown+=100;
 	if(key ==126)
-		data->updown+=10;
+		data->updown-=100;
+	if(key == 27) // -
+		data->scale/=1.3;
+	if (key ==24) //+
+		data->scale*=1.3;
+	if(key == 49 && 1) // moron
+	{
+			data->angle+=0.1;
+	}
 	mlx_clear_window(data->mlx_ptr,data->win_ptr);
 	Picture(data);
-	printf("yessir\n");
+	// printf("yessir\n");
 	return (0);
 }
 int main(void)
@@ -339,10 +401,21 @@ int main(void)
 	int w;
 	int h;
 
+	// kek=getmap("elem2.fdf");
+	// h = getheight("elem2.fdf");
+	// w = getwidth("elem2.fdf");
+
 	kek=getmap("42.fdf");
-	i = 0;
 	h = getheight("42.fdf");
 	w = getwidth("42.fdf");
+
+	// 	kek=getmap("pyra.fdf");
+	// h = getheight("pyra.fdf");
+	// w = getwidth("pyra.fdf");
+	
+	
+
+	i=0;
 	printf("%d\n",h);
 	printf("%d\n",w);
 	for (int i = 0; i < h; i++)
@@ -358,14 +431,15 @@ int main(void)
 	data.height=h;
 	data.width=w;
 	data.mlx_ptr = mlx_init();
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "FDF");
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 1920, 1080, "FDF");
 
 
-
+	default_settings(&data);
 	// Draw(10,10,600,300,&data);
 	Picture(&data);
 
 	mlx_key_hook(data.win_ptr, which_key, &data);
+	mlx_do_sync(data.mlx_ptr);
 	mlx_loop(data.mlx_ptr);
 
 
