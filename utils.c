@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 17:40:56 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 18:04:40 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:55:36 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ float	mod(float a)
 		return (a);
 }
 
-void	default_settings(Map *data)
+void	default_settings(t_Map *data)
 {
 	data->updown = 100;
 	data->leftright = -100;
@@ -37,7 +37,7 @@ void	default_settings(Map *data)
 	data->flag = 0;
 }
 
-void	angle(float *x, float *y, int z, Map *data)
+void	angle(float *x, float *y, int z, t_Map *data)
 {
 	float	temp_x;
 	float	temp_y;
@@ -46,4 +46,9 @@ void	angle(float *x, float *y, int z, Map *data)
 	temp_y = *y;
 	*x = (temp_x - temp_y) * cos(data->angle);
 	*y = (temp_x + temp_y) * sin(data->angle) - z;
+}
+
+void	pixput(t_Map *data)
+{
+	mlx_pixel_put(data->mlx_ptr, data->win_ptr, data->x, data->y, data->color);
 }

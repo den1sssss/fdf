@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 17:38:18 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/03 18:44:38 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:48:43 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ int	getheight(char *file)
 	height = 0;
 	str = NULL;
 	fd = open(file, O_RDONLY);
-	while ((str = get_next_line(fd)) != NULL)
+	str = get_next_line(fd);
+	while (str != NULL)
 	{
 		height++;
 		free(str);
+		str = get_next_line(fd);
 	}
 	close(fd);
 	return (height);
@@ -56,13 +58,12 @@ int	getwidth(char *file)
 	return (words);
 }
 
-int	**getmap(char *file)
+int	**getmap(char *file, char **str)
 {
 	int		i;
 	int		j;
 	int		fd;
 	int		**map;
-	char	**str;
 	int		*massiv;
 
 	fd = open(file, O_RDONLY);

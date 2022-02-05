@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 17:50:29 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 17:27:43 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:54:25 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "MLX/mlx.h"
 # include <math.h>
 
-typedef struct
+typedef struct s_Map
 {
 	int		height;
 	int		width;
@@ -38,25 +38,25 @@ typedef struct
 	float	x1;
 	float	y1;
 	int		flag;
-}	Map;
-
+	int		j;
+}	t_Map;
 
 int		getheight(char *file);
 int		getwidth(char *file);
-int		**getmap(char *file);
-// void	draw(float x, float y, float x1, float y1, Map *data);
-void	draw(Map *data);
-
-
-
-void	picture(Map *data);
-int		which_key(int key, Map *data);
+int		**getmap(char *file, char **str);
+void	draw(t_Map *data);
+void	picture(t_Map *data);
+int		which_key(int key, t_Map *data);
 float	max(float a, float b);
 float	mod(float a);
-void	angle(float *x, float *y, int z, Map *data);
-void	default_settings(Map *data);
-void rotation(Map *data);
-
-void	drawrot(Map *data) ;
+void	angle(float *x, float *y, int z, t_Map *data);
+void	default_settings(t_Map *data);
+void	rotation(t_Map *data);
+void	drawrot(t_Map *data);
+void	pixput(t_Map *data);
+void	drawpicture(int x, int y, t_Map *data);
+void	whichcolor(int z, int z1, t_Map *data);
+void	setzoom(t_Map *data);
+void	setposition(t_Map *data);
 
 #endif 
