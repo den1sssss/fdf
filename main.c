@@ -6,51 +6,12 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:21:57 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/03 19:52:56 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 18:18:07 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-void	draw(float x, float y, float x1, float y1, Map *data) //correct
-{
-	float	xx;
-	float	yy;
-	float	maximum;
-	int		z;
-	int		z1;
-
-	z = data->matrix[(int)y][(int)x];
-	z1 = data->matrix[(int)y1][(int)x1];
-	x *= data->scale;
-	x1 *= data->scale;
-	y *= data->scale;
-	y1 *= data->scale;
-	angle(&x, &y, z, data);
-	angle(&x1, &y1, z1, data);
-	xx = x1 - x;
-	yy = y1 - y;
-	maximum = max(mod(xx), mod(yy));
-	xx /= maximum;
-	yy /= maximum;
-	x += data->leftright;
-	y += data->updown;
-	x1 += data->leftright;
-	y += data->updown;
-	if (z > 0 || z1 > 0)
-		data->color = 0xFF0000;
-	else
-		data->color = 0xFFFFFF;
-	while ((int)(x - x1) && (int)(y - y1))
-	{
-		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, data->color);
-		x += xx;
-		y += yy;
-		if (x < 0 || y < 0)
-			break ;
-	}
-}
-
-// void	draw(Map *data) 
+// void	draw(float x, float y, float x1, float y1, Map *data) //correct
 // {
 // 	float	xx;
 // 	float	yy;
@@ -58,36 +19,76 @@ void	draw(float x, float y, float x1, float y1, Map *data) //correct
 // 	int		z;
 // 	int		z1;
 
-// 	z = data->matrix[(int)data->y][(int)data->x];
-// 	z1 = data->matrix[(int)data->y1][(int)data->x1];
-// 	data->x *= data->scale;
-// 	data->x1 *= data->scale;
-// 	data->y *= data->scale;
-// 	data->y1 *= data->scale;
-// 	angle(&data->x, &data->y, z, data);
-// 	angle(&data->x1, &data->y1, z1, data);
-// 	xx = data->x1 - data->x;
-// 	yy = data->y1 - data->y;
+// 	z = data->matrix[(int)y][(int)x];
+// 	z1 = data->matrix[(int)y1][(int)x1];
+// 	x *= data->scale;
+// 	x1 *= data->scale;
+// 	y *= data->scale;
+// 	y1 *= data->scale;
+// 	angle(&x, &y, z, data);
+// 	angle(&x1, &y1, z1, data);
+// 	xx = x1 - x;
+// 	yy = y1 - y;
 // 	maximum = max(mod(xx), mod(yy));
 // 	xx /= maximum;
 // 	yy /= maximum;
-// 	data->x += data->leftright;
-// 	data->y += data->updown;
-// 	data->x1 += data->leftright;
-// 	data->y += data->updown;
+// 	x += data->leftright;
+// 	y += data->updown;
+// 	x1 += data->leftright;
+// 	y += data->updown;
 // 	if (z > 0 || z1 > 0)
 // 		data->color = 0xFF0000;
 // 	else
 // 		data->color = 0xFFFFFF;
-// 	while ((int)(data->x - data->x1) && (int)(data->y - data->y1))
+// 	while ((int)(x - x1) && (int)(y - y1))
 // 	{
-// 		mlx_pixel_put(data->mlx_ptr, data->win_ptr, data->x, data->y, data->color);
-// 		data->x += xx;
-// 		data->y += yy;
-// 		if (data->x < 0 || data->y < 0)
+// 		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, data->color);
+// 		x += xx;
+// 		y += yy;
+// 		if (x < 0 || y < 0)
 // 			break ;
 // 	}
 // }
+
+void	draw(Map *data) 
+{
+	float	xx;
+	float	yy;
+	float	maximum;
+	int		z;
+	int		z1;
+
+	z = data->matrix[(int)data->y][(int)data->x];
+	z1 = data->matrix[(int)data->y1][(int)data->x1];
+	data->x *= data->scale;
+	data->x1 *= data->scale;
+	data->y *= data->scale;
+	data->y1 *= data->scale;
+	angle(&data->x, &data->y, z, data);
+	angle(&data->x1, &data->y1, z1, data);
+	xx = data->x1 - data->x;
+	yy = data->y1 - data->y;
+	maximum = max(mod(xx), mod(yy));
+	xx /= maximum;
+	yy /= maximum;
+	data->x += data->leftright;
+	data->y += data->updown;
+	data->x1 += data->leftright;
+	data->y1 += data->updown;
+	if (z > 0 || z1 > 0)
+		data->color = 0xFF0000;
+	else
+		data->color = 0xFFFFFF;
+	while ((int)(data->x - data->x1) && (int)(data->y - data->y1))
+	{
+		mlx_pixel_put(data->mlx_ptr, data->win_ptr, data->x, data->y, data->color);
+		data->x += xx;
+		data->y += yy;
+		if (data->x < 0 || data->y < 0)
+			break ;
+	}
+}
+
 
 
 // void	picture(Map *data)   //correct
@@ -122,25 +123,31 @@ void	draw(float x, float y, float x1, float y1, Map *data) //correct
 
 void	picture(Map *data) // correct too 
 {
-	int	x;
-	int	y;
-
+	int x;
+	int y;
+	
 	y = 0;
 	while (y < data->height)
 	{
 		x = 0;
 		while (x < data->width)
 		{
+			if (x < data->width - 1)
+			{
 			data->x = x;
 			data->y = y;
-			data->x1=x+1;
-			data->y1=y+1;
-			if (x < data->width - 1)
-				draw(data->x,data->y,data->x1,data->y,data);
-				// draw(data);
+			data->x1 = x + 1;
+			data->y1 = y;
+				draw(data);
+			}
 			if (y < data->height - 1)
-				draw(data->x,data->y,data->x,data->y1,data);
-				// draw(data);
+			{
+			data->x = x;
+			data->y = y;
+			data->x1 = x;
+			data->y1 = y + 1;
+				draw(data);
+			}
 			x++;
 		}
 		y++;
@@ -148,12 +155,58 @@ void	picture(Map *data) // correct too
 	printf("\nleftright %d\n", data->leftright);
 	printf("updown %d\n\n", data->updown);
 }
-// void rotation(Map *data)
-// {
-// }
+
+void rotation(Map *data)
+{
+	int x;
+	int y;
+	
+	y = 0;
+	while (y < data->height)
+	{
+		x = 0;
+		while (x < data->width)
+		{
+			if (x < data->width - 1)
+			{
+				data->x = x;
+				data->y = y;
+				data->x1 = x + 1;
+				data->y1 = y;
+				drawrot(data);
+			}
+			if (y < data->height - 1)
+			{
+				data->x = x;
+				data->y = y;
+				data->x1 = x;
+				data->y1 = y + 1;
+				drawrot(data);
+			}
+			x++;
+		}
+		y++;
+	}
+}
 
 int	which_key(int key, Map *data)
 {
+	mlx_clear_window(data->mlx_ptr, data->win_ptr);
+	// data->flag =0;
+	if (key == 36 && data->flag == 0)
+	{
+		data->flag = 1;
+		mlx_clear_window(data->mlx_ptr, data->win_ptr);
+		rotation(data);
+	}
+	else if (key == 36 && data->flag ==1)
+	{
+		// default_settings(data);
+		data->flag = 0;
+		mlx_clear_window(data->mlx_ptr, data->win_ptr);
+		picture(data);
+	}
+	printf ("\n%d = flag\n",data->flag);
 	printf("button %d", key);
 	if (key == 123)
 		data->leftright -= 100;
@@ -169,10 +222,16 @@ int	which_key(int key, Map *data)
 		data->scale *= 1.3;
 	if (key == 49)
 		data->angle += 0.1;
-	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-	picture(data);
-	// if (key == 36)
+	// if (data->flag == 1)
+	// {
+	// 	mlx_clear_window(data->mlx_ptr, data->win_ptr);
 	// 	rotation(data);
+	// }
+	// mlx_clear_window(data->mlx_ptr, data->win_ptr);
+	if( data->flag == 0)
+		picture(data);
+	if (data->flag == 1)
+		rotation(data);
 	if (key == 53)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	return (0);
