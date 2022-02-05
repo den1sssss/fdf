@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 17:50:29 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 19:54:25 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 20:12:22 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft/libft.h"
-# include "get_next_line/get_next_line.h"
+# include "get_next_line.h"
 # include "MLX/mlx.h"
 # include <math.h>
 

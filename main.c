@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:21:57 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 19:57:19 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/05 20:29:51 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,18 +105,20 @@ int	which_key(int key, t_Map *data)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_Map		data;
 	int			**matrix;
 	char		**str;
 
 	str = NULL;
-	matrix = getmap("42.fdf", str);
+	if (argc != 2)
+		write(1, "error\n", 6);
+	matrix = getmap(*++argv, str);
 	data = *(t_Map *)malloc(sizeof(t_Map));
 	data.matrix = matrix;
-	data.height = getheight("42.fdf");
-	data.width = getwidth("42.fdf");
+	data.height = getheight(*argv);
+	data.width = getwidth(*argv);
 	data.mlx_ptr = mlx_init();
 	data.win_ptr = mlx_new_window(data.mlx_ptr, 1920, 1080, "FDF");
 	default_settings(&data);
