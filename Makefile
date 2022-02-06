@@ -6,7 +6,7 @@
 #    By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/05 20:06:26 by dshirely          #+#    #+#              #
-#    Updated: 2022/02/05 20:09:26 by dshirely         ###   ########.fr        #
+#    Updated: 2022/02/06 14:46:01 by dshirely         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ clean:
 	@make -C MLX/ clean
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 	@make -C libft/ fclean
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:21:57 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 20:29:51 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:34:16 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	picture(t_Map *data)
 		}
 		y++;
 	}
-	printf("\nleftright %d\n", data->leftright);
-	printf("updown %d\n\n", data->updown);
 }
 
 void	utilkey(int key, t_Map *data)
@@ -99,8 +97,6 @@ int	which_key(int key, t_Map *data)
 		mlx_clear_window(data->mlx_ptr, data->win_ptr);
 		picture(data);
 	}
-	printf ("\n%d = flag\n", data->flag);
-	printf("button %d", key);
 	utilkey(key, data);
 	return (0);
 }
@@ -114,15 +110,19 @@ int	main(int argc, char **argv)
 	str = NULL;
 	if (argc != 2)
 		write(1, "error\n", 6);
-	matrix = getmap(*++argv, str);
-	data = *(t_Map *)malloc(sizeof(t_Map));
-	data.matrix = matrix;
-	data.height = getheight(*argv);
-	data.width = getwidth(*argv);
-	data.mlx_ptr = mlx_init();
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 1920, 1080, "FDF");
-	default_settings(&data);
-	picture(&data);
-	mlx_key_hook(data.win_ptr, which_key, &data);
-	mlx_loop(data.mlx_ptr);
+	else
+	{
+		matrix = getmap(*++argv, str);
+		data = *(t_Map *)malloc(sizeof(t_Map));
+		data.matrix = matrix;
+		data.height = getheight(*argv);
+		data.width = getwidth(*argv);
+		data.mlx_ptr = mlx_init();
+		data.win_ptr = mlx_new_window(data.mlx_ptr, 1920, 1080, "FDF");
+		default_settings(&data);
+		picture(&data);
+		mlx_key_hook(data.win_ptr, which_key, &data);
+		mlx_do_sync(data.mlx_ptr);
+		mlx_loop(data.mlx_ptr);
+	}
 }

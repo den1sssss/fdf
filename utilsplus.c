@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:59:15 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/05 19:55:25 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:28:16 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	drawpicture(int x, int y, t_Map *data)
 void	whichcolor(int z, int z1, t_Map *data)
 {
 	if (z > 0 || z1 > 0)
-		data->color = 0xFF0000;
+		data->color = 0xF4D03F;
 	else
-		data->color = 0xFFFFFF;
+		data->color = 0xFF0000;
 }
 
 void	setposition(t_Map *data)
