@@ -6,7 +6,7 @@
 /*   By: dshirely <dshirely@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:21:57 by dshirely          #+#    #+#             */
-/*   Updated: 2022/02/06 14:34:16 by dshirely         ###   ########.fr       */
+/*   Updated: 2022/02/08 17:49:14 by dshirely         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ void	utilkey(int key, t_Map *data)
 	if (data->flag == 1)
 		rotation(data);
 	if (key == 53)
+	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		exit(0);
+	}
 }
 
 int	which_key(int key, t_Map *data)
